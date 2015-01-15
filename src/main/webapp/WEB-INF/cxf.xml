@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns:lang="http://www.springframework.org/schema/lang"  
+    xmlns:jaxws="http://cxf.apache.org/jaxws"  
+    xsi:schemaLocation="  
+         http://www.springframework.org/schema/beans   
+         http://www.springframework.org/schema/beans/spring-beans.xsd  
+         http://www.springframework.org/schema/lang   
+         http://www.springframework.org/schema/lang/spring-lang.xsd  
+         http://cxf.apache.org/jaxws        
+         http://cxf.apache.org/schemas/jaxws.xsd  
+         ">
+    <import resource="classpath:META-INF/cxf/cxf.xml"/>   
+    <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>  
+     
+	<bean id="operatorServiceBean" class="com.stpass.dragon.hospital.service.generic.OperatorServiceImpl"/>
+	
+	<bean id="authorityServiceCxfBean" class="com.stpass.dragon.hospital.ws.cxf.AuthorityServiceCxf">
+		<property name="operatorService" ref="operatorServiceBean" />
+	</bean>
+	
+    <!--  
+	<jaxws:server serviceClass="com.stpass.dragon.hospital.ws.cxf.AuthorityServiceCxf" address="/auth">
+		<jaxws:serviceBean>
+			<ref bean="authorityService" />
+		</jaxws:serviceBean> 
+	</jaxws:server> 
+	-->
+	<jaxws:endpoint id="authorityServiceCxf"    
+        address="/auth" implementor="#authorityServiceCxfBean">  
+	</jaxws:endpoint> 
+</beans>
